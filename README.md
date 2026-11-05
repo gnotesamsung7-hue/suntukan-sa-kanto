@@ -18,6 +18,7 @@ Replace `app/src/main/assets/index.html` with the newest game file and commit. A
 - Back button: pauses the fight / skips a cutscene / returns to the title; exits only from the title
 - Saves, unlocks and recorded combos stay on the phone
 - "I-load ang combo file" opens the phone's file picker
+- One-click Copy on the Art prompts screen copies straight to the phone clipboard
 
 ## Notes
 - The signing key in this repo is for sideloading only. For a Play Store release, make a new private key and keep it out of the repo.

@@ -1,12 +1,16 @@
 package com.markdave.suntukan;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -56,6 +60,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(true);
         s.setTextZoom(100);
 
+        web.addJavascriptInterface(new Bridge(), "AndroidBridge");
         web.setWebViewClient(new WebViewClient());
         web.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -134,5 +139,16 @@ public class MainActivity extends Activity {
         web.evaluateJavascript(BACK_JS, value -> {
             if (value == null || value.contains("exit")) finish();
         });
+    }
+
+    /** Lets the game's one-click Copy buttons (art prompts, combo file) use the phone clipboard. */
+    private class Bridge {
+        @JavascriptInterface
+        public void copy(final String text) {
+            runOnUiThread(() -> {
+                ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                if (cm != null) cm.setPrimaryClip(ClipData.newPlainText("Suntukan sa Kanto", text));
+            });
+        }
     }
 }
